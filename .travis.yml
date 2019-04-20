@@ -8,3 +8,4 @@ install:
     - pipenv install --dev
 script:
     - black --check
+   
