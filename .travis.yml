@@ -8,3 +8,5 @@ install:
     - pipenv sync -d
 script:
     - black --check
+after_success:
+    - codecov
