@@ -14,17 +14,16 @@ before_script:
     - psql -c 'create database loan_db;' -U postgres
 install:
     - if [[ $DB == postgres ]]; then pip install -q psycopg2-binary; fi
-    - pip install -r requirements.txt
     - pip install pipenv --upgrade
     - pipenv sync -d
 script:
-    - black project/api --check
-    - python project/manage.py migrate
-    - python project/manage.py test
+    - black --check project/ api/
+    - python manage.py migrate
+    - python manage.py test
 after_success:
     - codecov
 deploy:
   provider: heroku
   api_key:
-    secure: "f2592a6a-a613-4fa5-9a8e-336b7a26ba6e"
-    run: open
+    secure: $KEY_HEROKU
+
