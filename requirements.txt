@@ -1,6 +1,0 @@
-Django==2.2
-gunicorn
-django-heroku
-requests
-black
-psycopg2-binary
