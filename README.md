@@ -1,7 +1,7 @@
 # Loan Management System
 
-![GitHub](https://img.shields.io/github/license/squad-4/loan-management-system.svg)
-![Codecov](https://img.shields.io/codecov/c/github/squad-4/loan-management-system.svg)
+[![License](https://img.shields.io/github/license/squad-4/loan-management-system.svg)](https://opensource.org/licenses/GPL-3.0)
+[![codecov](https://codecov.io/gh/squad-4/loan-management-system/branch/master/graph/badge.svg)](https://codecov.io/gh/squad-4/loan-management-system)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 > A simple API to manage the loan payments control system from a fintech
@@ -18,18 +18,6 @@ A fintech needs to keep track of the amount of money loaned and the missed/made 
 
 The purpose of this challenge is to test your ability to implement a solution given an abstract problem. You may find a problem in the asked task that you need to explain the problem and propose a solution to fix it.
 The challenge was proposed by [Codenation](https://codenation.dev), as part of the **Acelera Dev - Python para Web** program.
-
-# Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-## Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-# Documentation
-
-Wait...
 
 # Authors
 
