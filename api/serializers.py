@@ -6,7 +6,8 @@ class LoanSerializer(serializers.ModelSerializer):
     """
     Serializer for Loan model
     """
-    id = serializers.UUIDField(write_only=True, required=False, format='hex')
+
+    id = serializers.UUIDField(write_only=True, required=False, format="hex")
     amount = serializers.IntegerField(write_only=True)
     term = serializers.IntegerField(write_only=True)
     rate = serializers.FloatField(write_only=True)
@@ -33,7 +34,7 @@ class LoanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Loan
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -43,4 +44,4 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = '__all__'
+        fields = "__all__"

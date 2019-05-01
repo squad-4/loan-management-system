@@ -9,10 +9,11 @@ class LoanViewSet(viewsets.ModelViewSet):
     """
     Base view for Loan
     """
+
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
 
-    @action(detail=True, methods=['post', 'get'])
+    @action(detail=True, methods=["post", "get"])
     def payments(self, request, pk=None):
         """
         Assign payments to Loan
@@ -24,17 +25,19 @@ class LoanViewSet(viewsets.ModelViewSet):
         :return: response
         """
         obj = self.get_object()
-        if request.method == 'GET':
-            return response.Response(PaymentSerializer(obj.payment_set.all(), many=True).data,
-                                     status=status.HTTP_200_OK)
+        if request.method == "GET":
+            return response.Response(
+                PaymentSerializer(obj.payment_set.all(), many=True).data,
+                status=status.HTTP_200_OK,
+            )
         payment = request.data
-        payment['loan'] = pk
+        payment["loan"] = pk
         serializer = PaymentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=["post"])
     def balance(self, request, pk=None):
         """
         Calculate balance between loan and payments
@@ -44,8 +47,12 @@ class LoanViewSet(viewsets.ModelViewSet):
         :param pk: Loan ID
         :return: response
         """
-        date = request.data.get('date', None)
+        date = request.data.get("date", None)
         loan = self.get_object()
         debit = loan.amount
-        credit = sum(loan.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list('amount', flat=True))
+        credit = sum(
+            loan.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list(
+                "amount", flat=True
+            )
+        )
         return response.Response(dict(balance=debit - credit), status=200)
