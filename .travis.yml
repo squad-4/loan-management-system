@@ -18,6 +18,7 @@ install:
     - pipenv sync -d
 script:
     - black --check project/ api/
+    - python manage.py makemigrations
     - python manage.py migrate
     - python manage.py test
     - coverage run --source="." manage.py test api
