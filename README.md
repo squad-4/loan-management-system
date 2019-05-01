@@ -44,7 +44,7 @@ These are optional but recommended.
 
 #### Installing
 
-First, you need a copy of the source code, you can download it (here)[https://github.com/squad-4/loan-management-system] or clone the project. To clone the project you need [Git](https://git-scm.com), if you don't have it installed go to the official site and follow the instructions, if you already have it just open a terminal application and enter the following commands.
+First, you need a copy of the source code, you can download it [here](https://github.com/squad-4/loan-management-system) or clone the project. To clone the project you need [Git](https://git-scm.com), if you don't have it installed go to the official site and follow the instructions, if you already have it just open a terminal application and enter the following commands.
 
 ```shell
 $ cd desired/path/
