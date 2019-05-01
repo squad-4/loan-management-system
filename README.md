@@ -2,12 +2,12 @@
 
 > A simple API to manage the loan payments control system from a fintech
 
-[![License](https://img.shields.io/github/license/squad-4/loan-management-system.svg)](https://opensource.org/licenses/GPL-3.0)
 [![Build Status](https://travis-ci.org/squad-4/loan-management-system.svg?branch=master)](https://travis-ci.org/squad-4/loan-management-system)
+[![codecov](https://codecov.io/gh/squad-4/loan-management-system/branch/master/graph/badge.svg)](https://codecov.io/gh/squad-4/loan-management-system)
 [![Updates](https://pyup.io/repos/github/squad-4/loan-management-system/shield.svg)](https://pyup.io/repos/github/squad-4/loan-management-system/)
 [![Python 3](https://pyup.io/repos/github/squad-4/loan-management-system/python-3-shield.svg)](https://pyup.io/repos/github/squad-4/loan-management-system/)
-[![codecov](https://codecov.io/gh/squad-4/loan-management-system/branch/master/graph/badge.svg)](https://codecov.io/gh/squad-4/loan-management-system)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![License](https://img.shields.io/github/license/squad-4/loan-management-system.svg)](https://opensource.org/licenses/GPL-3.0)
 
 - Monitoring the volume of loans;
 - Control of payments;
