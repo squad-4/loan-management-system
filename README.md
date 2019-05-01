@@ -1,6 +1,6 @@
 # Loan Management System
 
-> A simple API to manage the loan payments control system from a fintech
+> A simple API to manage loan payments for a fintech.
 
 [![Build Status](https://travis-ci.org/squad-4/loan-management-system.svg?branch=master)](https://travis-ci.org/squad-4/loan-management-system)
 [![codecov](https://codecov.io/gh/squad-4/loan-management-system/branch/master/graph/badge.svg)](https://codecov.io/gh/squad-4/loan-management-system)
@@ -9,12 +9,11 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![License](https://img.shields.io/github/license/squad-4/loan-management-system.svg)](https://opensource.org/licenses/GPL-3.0)
 
-- Monitoring the volume of loans;
-- Control of payments;
-- Calculation of outstanding debts.
+- Loan management
+- Payments control
+- Outstanding balance
 
-This API is part of the final challenge of the **"Acelera DEV - Python para Web"** program, promoted by [Codenation](https://codenation.dev).
-
+This project is part of the final challenge for the **"Acelera DEV - Python para Web"** program promoted by [Codenation](https://codenation.dev) running between april and may of 2019.
 
 # Authors
 
