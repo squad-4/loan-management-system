@@ -10,6 +10,14 @@
 - Payments control
 - Outstanding balance
 
+## Deploy
+
+This application can be deployed to [Heroku](https://devcenter.heroku.com/articles/github-integration) with just one click at the button. 🥳
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+For more deploy options take a look at Django's official [documentation](https://docs.djangoproject.com).
+
 ## Development
 
 The following guidelines will help you to have a copy ready and running of the project so you can play around, make changes and improvements.
