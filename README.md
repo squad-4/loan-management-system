@@ -109,6 +109,8 @@ $ pre-commit install  # remember to load a shell first if using Pipenv
 
 This project is part of the final challenge for the **Acelera DEV - Python para Web** program promoted by [Codenation](https://codenation.dev) running between april and may of 2019.
 
+The project specification is available [here](SPECS.md).
+
 ## Authors
 
 - [Caio Torresi](https://github.com/caioCT)
