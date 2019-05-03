@@ -51,7 +51,7 @@ Create a loan application. Loans are automatically accepted.
 
 ```json
 {
-    "loan_id": "000-0000-0000-0000"
+    "loan_id": "000-0000-0000-0000",
     "installment": 85.60
 }
 ```
