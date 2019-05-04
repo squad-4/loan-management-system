@@ -11,7 +11,7 @@ env:
   matrix:
     - DJANGO_VERSION=2.2 DB=postgres
 before_script:
-    - psql -c 'create database loan_db;' -U postgres
+    - psql -c "create database loan_db;" -U postgres
 install:
     - if [[ $DB == postgres ]]; then pip install -q psycopg2-binary; fi
     - pip install pipenv --upgrade
@@ -21,6 +21,7 @@ script:
     - python manage.py makemigrations
     - python manage.py migrate
     - python manage.py test
+    - coverage run --source="." manage.py test api
 after_success:
     - codecov
 deploy:
