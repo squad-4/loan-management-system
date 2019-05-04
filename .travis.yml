@@ -23,8 +23,3 @@ script:
     - coverage run --source="." manage.py test api
 after_success:
     - codecov
-deploy:
-  provider: heroku
-  api_key:
-    secure: $KEY_HEROKU
-
