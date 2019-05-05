@@ -108,3 +108,6 @@ venv.bak/
 
 # PyCharm settings
 .idea/
+
+# Windows specific settings for local debug by Heroku CLI
+Procfile.windows
