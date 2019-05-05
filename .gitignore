@@ -108,6 +108,3 @@ venv.bak/
 
 # PyCharm settings
 .idea/
-
-# Django Migrations
-00*
