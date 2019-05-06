@@ -31,21 +31,19 @@ class Loan(models.Model):
 
 
 class Payment(models.Model):
-    """
-    Payment model
-    """
 
     MADE = "made"
     MISSED = "missed"
     PAYMENTS = ((MADE, "made"), (MISSED, "missed"))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     loan = models.ForeignKey(
-        to="api.Loan", verbose_name=_("loan"), on_delete=models.DO_NOTHING
+        to="api.Loan", verbose_name=_("loan"), on_delete=models.CASCADE
     )
     payment = models.CharField(
-        verbose_name=_("payment"), max_length=20, choices=PAYMENTS, default=MISSED
+        verbose_name=_("payment"), max_length=6, choices=PAYMENTS, default=MISSED
     )
     date = models.DateTimeField(verbose_name=_("date"))
     amount = models.FloatField(verbose_name=_("amount"))
 
-    def __str__(self):
-        return self.loan
+    def __str__(self) -> str:
+        return str(self.id)
