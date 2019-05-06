@@ -14,5 +14,5 @@ class TestPaymentModel(TestCase):
     def test_payment__str__(self):
         self.assertEqual(str(self.payment), str(self.payment.id))
 
-    def test_loadn__str__(self):
+    def test_loan__str__(self):
         self.assertEqual(str(self.loan), str(self.loan.id))
