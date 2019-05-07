@@ -6,7 +6,7 @@ from django.utils import timezone
 class TestPaymentModel(TestCase):
     def setUp(self) -> None:
         self.loan = Loan.objects.create(
-            amount=1000, term=12, rate=0.05, date=timezone.now()
+            amount=1000, term=12, rate=0.05, date="2019-06-08 03:18Z"
         )
         self.payment = Payment.objects.create(
             loan=self.loan, payment="made", date="2019-06-09 03:18Z", amount=200.00
