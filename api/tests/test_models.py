@@ -50,7 +50,7 @@ class TestLoanModel(TestCase):
         actual_loan_installment = round(self.loan.installment, 2)
         expected_loan_installment = 2573.42
         self.assertEqual(
-            actual_loan_installment,
             expected_loan_installment,
+            actual_loan_installment,
             "Property installment did not return the right value",
         )
