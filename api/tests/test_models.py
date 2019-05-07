@@ -1,6 +1,5 @@
 from django.test import TestCase
 from api.models import Payment, Loan
-from django.utils import timezone
 
 
 class TestPaymentModel(TestCase):
