@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 from django.utils.translation import gettext as _
+from django.utils import timezone
 
 
 class Base(models.Model):
@@ -23,15 +24,19 @@ class Loan(Base):
     term = models.IntegerField(verbose_name=_("term"))
     rate = models.FloatField(verbose_name=_("rate"))
 
+    def balance(self, date=timezone.now()) -> dict:
+        """ It calculates the loan balance for a given date
+            :param date: date of check
+        """
+        debit = self.amount
+        credit = sum(
+            filter(payment=Payment.MADE, date__lte=date).values_list("amount", flat=True)
+        )
+        return dict(balance=debit - credit)
+
     @property
     def installment(self):
-        """
-        Calculate installment
-        r = rate / 12
-        installment = [r + r / ((1 + r) ^ term - 1)] x amount
-        :return: float
-        """
-        r = self.rate / 12
+        r = self.rate / self.term
         return (r + r / ((1 + r) ** self.term - 1)) * self.amount
 
     def __str__(self):
@@ -46,6 +51,7 @@ class Payment(Base):
     loan = models.ForeignKey(
         to="api.Loan", verbose_name=_("loan"), on_delete=models.CASCADE
     )
+
     payment = models.CharField(
         verbose_name=_("payment"), max_length=6, choices=PAYMENTS, default=MISSED
     )

@@ -50,10 +50,4 @@ class LoanViewSet(viewsets.ModelViewSet):
         """
         date = request.data.get("date", None)
         loan = self.get_object()
-        debit = loan.amount
-        credit = sum(
-            loan.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list(
-                "amount", flat=True
-            )
-        )
-        return response.Response(dict(balance=debit - credit), status=200)
+        return response.Response(loan.balance(date), status=200)
