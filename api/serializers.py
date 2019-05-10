@@ -19,7 +19,7 @@ class LoanSerializer(serializers.ModelSerializer):
         :param loan:
         :return: round(float,2)
         """
-        return round(loan.installment, 2)
+        return loan.installment
 
     def get_loan_id(self, loan: Loan) -> str:
         """
