@@ -25,10 +25,6 @@ class LoanSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    """
-    Serializer for Payment model
-    """
-
     class Meta:
         model = Payment
         fields = "__all__"
