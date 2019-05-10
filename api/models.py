@@ -4,16 +4,24 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 
-class Loan(models.Model):
+class Base(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField(verbose_name=_("date"))
+    updated = models.DateTimeField(verbose_name=_("updated"), auto_now_add=True)
+    active = models.BooleanField(verbose_name=_("active"), default=True)
+
+    class Meta:
+        abstract = True
+
+
+class Loan(Base):
     """
     Loan model
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     amount = models.IntegerField(verbose_name=_("amount"))
     term = models.IntegerField(verbose_name=_("term"))
     rate = models.FloatField(verbose_name=_("rate"))
-    date = models.DateTimeField(verbose_name=_("date"))
 
     @property
     def installment(self):
@@ -30,19 +38,17 @@ class Loan(models.Model):
         return f"{self.id}"
 
 
-class Payment(models.Model):
+class Payment(Base):
 
     MADE = "made"
     MISSED = "missed"
     PAYMENTS = ((MADE, "made"), (MISSED, "missed"))
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     loan = models.ForeignKey(
         to="api.Loan", verbose_name=_("loan"), on_delete=models.CASCADE
     )
     payment = models.CharField(
         verbose_name=_("payment"), max_length=6, choices=PAYMENTS, default=MISSED
     )
-    date = models.DateTimeField(verbose_name=_("date"))
     amount = models.FloatField(verbose_name=_("amount"))
 
     def __str__(self) -> str:

@@ -21,10 +21,10 @@ class LoanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Loan
-        fields = "__all__"
+        exclude = ("updated", "active")
 
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = "__all__"
+        exclude = ("updated", "active")
