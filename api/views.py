@@ -7,7 +7,14 @@ from api.serializers import LoanSerializer, PaymentSerializer
 
 class LoanViewSet(viewsets.ModelViewSet):
     """
-    Base view for Loan
+    retrieve:
+    Return the given loan.
+
+    list:
+    Return a list of all the existing loans.
+
+    create:
+    Create a new loan.
     """
 
     queryset = Loan.objects.all()
@@ -16,13 +23,11 @@ class LoanViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post", "get"])
     def payments(self, request, pk=None):
         """
-        Assign payments to Loan
+        get:
+        Return a list of payments for a given loan.
 
-        if http verb is GET, return a list of payments of Loan
-        if http verb is POST, save new payment and return this
-        :param request: request
-        :param pk: Loan ID
-        :return: response
+        post:
+        Create a new payment for a given loan.
         """
         obj = self.get_object()
         if request.method == "GET":
@@ -40,12 +45,8 @@ class LoanViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def balance(self, request, pk=None):
         """
-        Calculate balance between loan and payments
-        * Filter made payments
-        * Filter date payment from post data using lower or equal
-        :param request: request
-        :param pk: Loan ID
-        :return: response
+        post:
+        Return the loan balance for a given date.
         """
         date = request.data.get("date", None)
         loan = self.get_object()
