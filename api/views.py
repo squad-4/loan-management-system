@@ -1,7 +1,9 @@
-from rest_framework import viewsets, response, status
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions, response, status, viewsets
 from rest_framework.decorators import action
 
-from api.models import Loan, Payment
+from api.models import Loan
 from api.serializers import LoanSerializer, PaymentSerializer
 
 
@@ -51,3 +53,21 @@ class LoanViewSet(viewsets.ModelViewSet):
         date = request.data.get("date", None)
         loan = self.get_object()
         return response.Response(loan.balance(date), status=200)
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Loan Management System API",
+        default_version="v1",
+        description="A simple API to manage loan payments for a fintech",
+        contact=openapi.Contact(
+            name="Squad-4", url="https://github.com/squad-4/loan-management-system"
+        ),
+        license=openapi.License(
+            name="GPL-3.0", url="https://opensource.org/licenses/GPL-3.0"
+        ),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+    validators=["ssv"],
+)

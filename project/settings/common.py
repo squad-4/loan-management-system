@@ -1,6 +1,6 @@
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_yasg",
     "api",
 ]
 
@@ -58,3 +59,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = "/static/"
+
+SWAGGER_SETTINGS = {
+    "USE_SESSION_AUTH": False,
+    "SUPPORTED_SUBMIT_METHODS": ["get", "post"],
+}
