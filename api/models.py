@@ -16,30 +16,23 @@ class Base(models.Model):
 
 
 class Loan(Base):
-    """
-    Loan model
-    """
-
-    amount = models.IntegerField(verbose_name=_("amount"))
+    amount = models.FloatField(verbose_name=_("amount"))
     term = models.IntegerField(verbose_name=_("term"))
     rate = models.FloatField(verbose_name=_("rate"))
 
-    def balance(self, date=timezone.now()) -> dict:
-        """ It calculates the loan balance for a given date
-            :param date: date of check
-        """
-        debit = self.amount
+    def balance(self, date: timezone.datetime = timezone.now()) -> dict:
+        debit = self.installment * self.term
         credit = sum(
-            filter(payment=Payment.MADE, date__lte=date).values_list("amount", flat=True)
+            self.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list("amount", flat=True)
         )
-        return dict(balance=debit - credit)
+        return {"balance": debit - credit}
 
     @property
-    def installment(self):
+    def installment(self) -> float:
         r = self.rate / self.term
         return (r + r / ((1 + r) ** self.term - 1)) * self.amount
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.id}"
 
 
