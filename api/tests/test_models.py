@@ -5,16 +5,10 @@ from api.models import Payment, Loan
 class TestPaymentModel(TestCase):
     def setUp(self) -> None:
         self.loan = Loan.objects.create(
-            amount=1000,
-            term=12,
-            rate=0.05,
-            date="2019-06-08 03:18Z"
+            amount=1000, term=12, rate=0.05, date="2019-06-08 03:18Z"
         )
         self.payment = Payment.objects.create(
-            loan=self.loan,
-            payment="made",
-            date="2019-06-09 03:18Z",
-            amount=200.00
+            loan=self.loan, payment="made", date="2019-06-09 03:18Z", amount=200.00
         )
 
     def test_payment_instance(self) -> None:
@@ -53,32 +47,9 @@ class TestLoanModel(TestCase):
 
     def test_installment(self) -> None:
         actual_loan_installment = round(self.loan.installment, 2)
-        expected_loan_installment = 2573.42
+        expected_loan_installment = 2647.84
         self.assertEqual(
             expected_loan_installment,
             actual_loan_installment,
             "Property installment did not return the right value",
-        )
-
-    def test_balance(self) -> None:
-        Payment.objects.create(
-            loan=self.loan,
-            payment="made",
-            date="2019-03-09 03:18Z",
-            amount=200.00
-        )
-        Payment.objects.create(
-            loan=self.loan,
-            payment="made",
-            date="2019-04-09 03:18Z",
-            amount=200.00
-        )
-        actual_date = "2019-05-09 03:18Z"
-        actual_balance = self.loan.balance(actual_date)
-        # expected_loan_installment = 2573.42
-        expected_balance = 123.123
-        self.assertEqual(
-            actual_balance,
-            expected_balance,
-            "Property balance did not return the right value",
         )
