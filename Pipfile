@@ -15,6 +15,7 @@ djangorestframework = "*"
 gunicorn = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
+drf-yasg = {extras = ["validation"],version = "*"}
 
 [requires]
 python_version = "3.7"
