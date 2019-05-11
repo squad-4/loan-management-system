@@ -12,8 +12,8 @@ install:
     - pipenv sync -d
 script:
     - black --check project/ api/
+    - python manage.py collectstatic --noinput
     - python manage.py migrate
-    - python manage.py test
     - coverage run --source="." manage.py test api
 after_success:
     - codecov
