@@ -23,7 +23,9 @@ class Loan(Base):
     def balance(self, date: timezone.datetime = timezone.now()) -> dict:
         debit = self.installment * self.term
         credit = sum(
-            self.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list("amount", flat=True)
+            self.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list(
+                "amount", flat=True
+            )
         )
         return {"balance": debit - credit}
 
