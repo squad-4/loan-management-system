@@ -16,6 +16,7 @@ gunicorn = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
 drf-yasg = {extras = ["validation"],version = "*"}
+whitenoise = "*"
 
 [requires]
 python_version = "3.7"
