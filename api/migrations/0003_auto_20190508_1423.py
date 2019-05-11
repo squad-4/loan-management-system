@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0002_auto_20190506_1945'),
-    ]
+    dependencies = [("api", "0002_auto_20190506_1945")]
 
     operations = [
         migrations.AlterField(
-            model_name='loan',
-            name='amount',
-            field=models.FloatField(verbose_name='amount'),
-        ),
+            model_name="loan",
+            name="amount",
+            field=models.FloatField(verbose_name="amount"),
+        )
     ]
