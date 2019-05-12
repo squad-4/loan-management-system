@@ -56,7 +56,7 @@ class Payment(Base):
         return str(self.id)
 
 
-class Customer(Base):
+class Client(Base):
 
     name = models.CharField(max_length=255, verbose_name=_("name"))
     surname = models.CharField(max_length=255, verbose_name=_("surname"))
@@ -70,8 +70,8 @@ class Customer(Base):
     )
 
     class Meta:
-        verbose_name = "Customer"
-        verbose_name_plural = "Customers"
+        verbose_name = "Client"
+        verbose_name_plural = "Clients"
 
     def __str__(self) -> str:
         return str(self.id)
