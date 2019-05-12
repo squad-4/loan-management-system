@@ -80,12 +80,8 @@ class TestCustomerModel(TestCase):
         return customer
 
     def setUp(self) -> None:
-        self.customer = Customer.objects.create(
-            name="Winston",
-            surname="Churchill",
-            email="winston.churchill@gov.uk",
-            telephone="011442007865463100",
-            cpf="93621285008",
+        self.customer = self.create_customer(
+            telephone="011442007865463100", cpf="93621285008"
         )
 
     def test_customer_instance(self):
