@@ -54,3 +54,24 @@ class Payment(Base):
 
     def __str__(self) -> str:
         return str(self.id)
+
+
+class Customer(Base):
+
+    name = models.CharField(max_length=255, verbose_name=_("name"))
+    surname = models.CharField(max_length=255, verbose_name=_("surname"))
+    email = models.EmailField(max_length=255, verbose_name=_("e-mail"))
+    telephone = models.CharField(max_length=20, blank=True, verbose_name=_("telephone"))
+    date = models.DateTimeField(
+        auto_now_add=True, blank=True, verbose_name=_("date of creation")
+    )
+    cpf = models.CharField(
+        max_length=14, unique=True, verbose_name=_("natural persons register")
+    )
+
+    class Meta:
+        verbose_name = "Customer"
+        verbose_name_plural = "Customers"
+
+    def __str__(self) -> str:
+        return str(self.id)

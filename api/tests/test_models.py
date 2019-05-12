@@ -1,5 +1,7 @@
 from django.test import TestCase
-from api.models import Payment, Loan
+from api.models import Payment, Loan, Customer
+from django.db.utils import IntegrityError
+from datetime import datetime
 
 
 class TestPaymentModel(TestCase):
@@ -53,3 +55,60 @@ class TestLoanModel(TestCase):
             actual_loan_installment,
             "Property installment did not return the right value",
         )
+
+
+class TestCustomerModel(TestCase):
+    def create_customer(
+        self,
+        name="Winston",
+        surname="Churchill",
+        email="winston.churchill@gov.uk",
+        telephone="",
+        cpf="",
+        date="",
+    ):
+
+        customer = Customer.objects.create(
+            name=name,
+            surname=surname,
+            email=email,
+            telephone=telephone,
+            cpf=cpf,
+            date=date,
+        )
+
+        return customer
+
+    def setUp(self) -> None:
+        self.customer = Customer.objects.create(
+            name="Winston",
+            surname="Churchill",
+            email="winston.churchill@gov.uk",
+            telephone="011442007865463100",
+            cpf="93621285008",
+        )
+
+    def test_customer_instance(self):
+        expected_name = "Winston"
+        expected_surname = "Churchill"
+        expected_email = "winston.churchill@gov.uk"
+        expected_telephone = "011442007865463100"
+        expected_cpf = "93621285008"
+        self.assertIsInstance(self.customer, Customer)
+        self.assertEqual(expected_name, self.customer.name)
+        self.assertEqual(expected_surname, self.customer.surname)
+        self.assertEqual(expected_email, self.customer.email)
+        self.assertEqual(expected_telephone, self.customer.telephone)
+        self.assertEqual(expected_cpf, self.customer.cpf)
+        self.assertIsInstance(self.customer.date, datetime)
+
+    def test_customer_instance_blank_telephone(self):
+        customer = self.create_customer(cpf="23875673823")
+        self.assertEqual(customer.telephone, "")
+
+    def test_customer_instance_unique_cpf(self):
+        with self.assertRaises(IntegrityError) as context:
+            customer = self.create_customer(cpf="93621285008")
+
+    def test_customer__str__(self):
+        self.assertEqual(str(self.customer), str(self.customer.id))
