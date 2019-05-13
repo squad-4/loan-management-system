@@ -1,4 +1,4 @@
-from api.models import Loan, Payment
+from api.models import Loan, Payment, Client
 from rest_framework import serializers
 
 
@@ -27,4 +27,10 @@ class LoanSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
+        exclude = ("updated", "active")
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
         exclude = ("updated", "active")
