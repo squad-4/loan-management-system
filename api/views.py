@@ -2,9 +2,10 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions, response, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
-from api.models import Loan
-from api.serializers import LoanSerializer, PaymentSerializer
+from api.models import Loan, Client
+from api.serializers import LoanSerializer, PaymentSerializer, ClientSerializer
 
 
 class LoanViewSet(viewsets.ModelViewSet):
@@ -53,6 +54,22 @@ class LoanViewSet(viewsets.ModelViewSet):
         date = request.data.get("date", None)
         loan = self.get_object()
         return response.Response(loan.balance(date), status=200)
+
+
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {"client_id": serializer.data["id"]},
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
 
 
 schema_view = get_schema_view(

@@ -1,10 +1,11 @@
 from django.urls import path, re_path
 from rest_framework import routers
 
-from api.views import LoanViewSet, schema_view
+from api.views import LoanViewSet, schema_view, ClientViewSet
 
 router = routers.DefaultRouter()
 router.register("loans", LoanViewSet)
+router.register("clients", ClientViewSet)
 
 urlpatterns = router.urls
 urlpatterns += [

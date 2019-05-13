@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
+from random import randint
 
 
 class TestLoan(TestCase):
@@ -72,3 +73,20 @@ class TestLoan(TestCase):
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         balance = resp.data.get("balance")
         self.assertEqual(round(balance, 2), 1027.29)
+
+
+class TestClient(TestCase):
+    def setUp(self) -> None:
+        self.api = APIClient()
+        self.payload = {
+            "name": "Felicity",
+            "surname": "Jones",
+            "email": "felicity@gmail.com",
+            "telephone": "11984345678",
+            "cpf": f"{randint(10000000000, 99999999999)}",
+        }
+
+    def test_post_client(self) -> None:
+        res = self.api.post("/api/clients/", self.payload, format="json")
+        self.assertEqual(201, res.status_code)
+        self.assertEqual({"client_id"}, res.data.keys())
