@@ -17,6 +17,7 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 drf-yasg = {extras = ["validation"],version = "*"}
 whitenoise = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
