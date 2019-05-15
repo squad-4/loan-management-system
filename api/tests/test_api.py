@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
-from random import randint
+from .utils import create_client
 
 
 class TestLoan(TestCase):
@@ -15,8 +15,14 @@ class TestLoan(TestCase):
     def _new_loan(self) -> int:
         if self.loan_id:
             return 201
-
-        post = {"amount": 1000, "term": 12, "rate": 0.05, "date": timezone.now()}
+        client_id = create_client().data.get("client_id")
+        post = {
+            "amount": 1000,
+            "term": 12,
+            "rate": 0.05,
+            "date": timezone.now(),
+            "client_id": client_id,
+        }
         resp = self.api.post("/api/loans/", post, format="json")
 
         if resp.status_code == 201:
@@ -76,17 +82,7 @@ class TestLoan(TestCase):
 
 
 class TestClient(TestCase):
-    def setUp(self) -> None:
-        self.api = APIClient()
-        self.payload = {
-            "name": "Felicity",
-            "surname": "Jones",
-            "email": "felicity@gmail.com",
-            "telephone": "11984345678",
-            "cpf": f"{randint(10000000000, 99999999999)}",
-        }
-
     def test_post_client(self) -> None:
-        res = self.api.post("/api/clients/", self.payload, format="json")
+        res = create_client()
         self.assertEqual(201, res.status_code)
         self.assertEqual({"client_id"}, res.data.keys())

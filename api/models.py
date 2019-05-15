@@ -19,6 +19,9 @@ class Loan(Base):
     amount = models.FloatField(verbose_name=_("amount"))
     term = models.IntegerField(verbose_name=_("term"))
     rate = models.FloatField(verbose_name=_("rate"))
+    client = models.ForeignKey(
+        to="api.Client", verbose_name=_("client_id"), on_delete=models.DO_NOTHING
+    )
 
     def balance(self, date: timezone.datetime = timezone.now()) -> dict:
         debit = self.installment * self.term

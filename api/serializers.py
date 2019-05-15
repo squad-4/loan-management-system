@@ -12,6 +12,9 @@ class LoanSerializer(serializers.ModelSerializer):
 
     installment = serializers.SerializerMethodField()
     loan_id = serializers.SerializerMethodField()
+    client_id = serializers.PrimaryKeyRelatedField(
+        queryset=Client.objects.all(), required=True, source="client", write_only=True
+    )
 
     def get_installment(self, loan: Loan) -> float:
         return loan.installment
@@ -21,7 +24,7 @@ class LoanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Loan
-        exclude = ("updated", "active")
+        exclude = ("updated", "active", "client")
 
 
 class PaymentSerializer(serializers.ModelSerializer):

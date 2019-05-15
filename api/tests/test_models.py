@@ -2,16 +2,18 @@ from django.test import TestCase
 from api.models import Payment, Loan, Client
 from django.db.utils import IntegrityError
 from datetime import datetime
+from .utils import (
+    create_client_from_model,
+    create_loan_from_model,
+    create_payment_from_model,
+)
 
 
 class TestPaymentModel(TestCase):
     def setUp(self) -> None:
-        self.loan = Loan.objects.create(
-            amount=1000, term=12, rate=0.05, date="2019-06-08 03:18Z"
-        )
-        self.payment = Payment.objects.create(
-            loan=self.loan, payment="made", date="2019-06-09 03:18Z", amount=200.00
-        )
+        client = create_client_from_model()
+        loan = create_loan_from_model(client)
+        self.payment = create_payment_from_model(loan)
 
     def test_payment_instance(self) -> None:
         expected_payment = "made"
@@ -29,9 +31,8 @@ class TestPaymentModel(TestCase):
 
 class TestLoanModel(TestCase):
     def setUp(self) -> None:
-        self.loan = Loan.objects.create(
-            amount=15000, term=6, rate=0.10, date="2019-05-09 03:18Z"
-        )
+        client = create_client_from_model()
+        self.loan = create_loan_from_model(client)
 
     def test_loan_instance(self) -> None:
         expected_amount = 15000
@@ -39,6 +40,7 @@ class TestLoanModel(TestCase):
         expected_rate = 0.10
         expected_date = "2019-05-09 03:18Z"
         self.assertIsInstance(self.loan, Loan)
+        self.assertIsInstance(self.loan.client, Client)
         self.assertEqual(expected_amount, self.loan.amount)
         self.assertEqual(expected_date, self.loan.date)
         self.assertEqual(expected_rate, self.loan.rate)
@@ -58,29 +60,8 @@ class TestLoanModel(TestCase):
 
 
 class TestClientModel(TestCase):
-    def create_client(
-        self,
-        name="Winston",
-        surname="Churchill",
-        email="winston.churchill@gov.uk",
-        telephone="",
-        cpf="",
-        date="",
-    ):
-
-        client = Client.objects.create(
-            name=name,
-            surname=surname,
-            email=email,
-            telephone=telephone,
-            cpf=cpf,
-            date=date,
-        )
-
-        return client
-
     def setUp(self) -> None:
-        self.client = self.create_client(
+        self.client = create_client_from_model(
             telephone="011442007865463100", cpf="93621285008"
         )
 
@@ -99,12 +80,12 @@ class TestClientModel(TestCase):
         self.assertIsInstance(self.client.date, datetime)
 
     def test_client_instance_blank_telephone(self):
-        client = self.create_client(cpf="23875673823")
+        client = create_client_from_model()
         self.assertEqual(client.telephone, "")
 
     def test_client_instance_unique_cpf(self):
         with self.assertRaises(IntegrityError) as context:
-            client = self.create_client(cpf="93621285008")
+            client = create_client_from_model(cpf="93621285008")
 
     def test_client__str__(self):
         self.assertEqual(str(self.client), str(self.client.id))
