@@ -2,7 +2,7 @@ from django.test import TestCase
 from api.models import Payment, Loan, Client
 from django.db.utils import IntegrityError
 from datetime import datetime
-from .utils import (
+from api.tests.utils import (
     create_client_from_model,
     create_loan_from_model,
     create_payment_from_model,

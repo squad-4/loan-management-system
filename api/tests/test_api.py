@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
-from .utils import create_client
+from api.tests.utils import create_client
 
 
 class TestLoan(TestCase):
@@ -66,14 +66,14 @@ class TestLoan(TestCase):
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         self.assertEqual(resp.status_code, 200)
 
-    def test_load_balance_value(self) -> None:
+    def test_loan_balance_value(self) -> None:
         self._new_payment()
         post = {"date": timezone.now()}
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         balance = resp.data.get("balance")
         self.assertEqual(round(balance, 2), 827.29)
 
-    def test_load_balance_incorrect_value(self) -> None:
+    def test_loan_balance_incorrect_value(self) -> None:
         self._new_payment()
         post = {"date": timezone.now() - timedelta(hours=1)}
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
