@@ -65,7 +65,7 @@ class TestClientModel(TestCase):
             telephone="011442007865463100", cpf="93621285008"
         )
 
-    def test_client_instance(self):
+    def test_client_instance(self) -> None:
         expected_name = "Winston"
         expected_surname = "Churchill"
         expected_email = "winston.churchill@gov.uk"
@@ -79,13 +79,13 @@ class TestClientModel(TestCase):
         self.assertEqual(expected_cpf, self.client.cpf)
         self.assertIsInstance(self.client.date, datetime)
 
-    def test_client_instance_blank_telephone(self):
+    def test_client_instance_blank_telephone(self) -> None:
         client = create_client_from_model()
         self.assertEqual(client.telephone, "")
 
-    def test_client_instance_unique_cpf(self):
+    def test_client_instance_unique_cpf(self) -> None:
         with self.assertRaises(IntegrityError) as context:
             client = create_client_from_model(cpf="93621285008")
 
-    def test_client__str__(self):
+    def test_client__str__(self) -> None:
         self.assertEqual(str(self.client), str(self.client.id))
