@@ -53,7 +53,7 @@ class LoanViewSet(viewsets.ModelViewSet):
         """
         date = request.data.get("date", None)
         loan = self.get_object()
-        return response.Response(loan.balance(date), status=200)
+        return response.Response({"balance": loan.balance(date)}, status=200)
 
 
 class ClientViewSet(viewsets.ModelViewSet):

@@ -30,12 +30,28 @@ class Loan(Base):
                 "amount", flat=True
             )
         )
-        return {"balance": debit - credit}
+        return debit - credit
 
     @property
     def installment(self) -> float:
         r = self.rate / self.term
         return (r + r / ((1 + r) ** self.term - 1)) * self.amount
+
+    @classmethod
+    def interest_rate(cls, client: Base, rate: float) -> float:
+        prev_loan = Loan.objects.filter(client=client.id).order_by("-date").first()
+
+        if prev_loan and prev_loan.balance() > 0:
+            raise ValueError("Pending loan")
+
+        missed_payments = Payment.objects.filter(
+            payment=Payment.MISSED, loan__in=Loan.objects.filter(client=client.id)
+        ).count()
+
+        if missed_payments > 3:
+            raise ValueError("Missed too many payments")
+
+        return rate - 0.02 if not missed_payments else rate + 0.04
 
     def __str__(self) -> str:
         return f"{self.id}"

@@ -22,6 +22,13 @@ class LoanSerializer(serializers.ModelSerializer):
     def get_loan_id(self, loan: Loan) -> str:
         return str(loan.id)
 
+    def validate(self, data):
+        try:
+            data["rate"] = Loan.interest_rate(data["client"], data["rate"])
+        except ValueError as e:
+            raise serializers.ValidationError({"error": e})
+        return data
+
     class Meta:
         model = Loan
         exclude = ("updated", "active", "client")

@@ -58,6 +58,10 @@ class TestLoanModel(TestCase):
             "Property installment did not return the right value",
         )
 
+    def test_interest_rate(self) -> None:
+        with self.assertRaises(ValueError):
+            Loan.interest_rate(self.loan.client, 0.05)
+
 
 class TestClientModel(TestCase):
     def setUp(self) -> None:
@@ -84,8 +88,8 @@ class TestClientModel(TestCase):
         self.assertEqual(client.telephone, "")
 
     def test_client_instance_unique_cpf(self) -> None:
-        with self.assertRaises(IntegrityError) as context:
-            client = create_client_from_model(cpf="93621285008")
+        with self.assertRaises(IntegrityError):
+            create_client_from_model(cpf="93621285008")
 
     def test_client__str__(self) -> None:
         self.assertEqual(str(self.client), str(self.client.id))
