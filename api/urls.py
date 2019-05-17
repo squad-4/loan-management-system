@@ -5,7 +5,7 @@ from api.views import LoanViewSet, schema_view, ClientViewSet
 
 router = routers.DefaultRouter()
 router.register("loans", LoanViewSet)
-router.register("clients", ClientViewSet)
+router.register("clients", ClientViewSet, "clients")
 
 urlpatterns = router.urls
 urlpatterns += [

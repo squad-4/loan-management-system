@@ -56,8 +56,20 @@ class LoanViewSet(viewsets.ModelViewSet):
 
 
 class ClientViewSet(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
     serializer_class = ClientSerializer
+
+    def get_queryset(self):
+        queryset = Client.objects.all()
+        cpf = self.request.query_params.get("cpf", None)
+        email = self.request.query_params.get("email", None)
+        telephone = self.request.query_params.get("telephone", None)
+        if cpf:
+            queryset = queryset.filter(cpf=cpf)
+        if email:
+            queryset = queryset.filter(email=email)
+        if telephone:
+            queryset = queryset.filter(telephone=telephone)
+        return queryset
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
