@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal
 
 from api.models import Client, Loan, Payment
 
@@ -19,7 +19,7 @@ class LoanSerializer(serializers.ModelSerializer):
     )
 
     def get_installment(self, loan: Loan) -> Decimal:
-        return loan.installment.quantize(Decimal(".00"), rounding=ROUND_HALF_UP)
+        return loan.installment
 
     def get_loan_id(self, loan: Loan) -> str:
         return str(loan.id)

@@ -71,14 +71,14 @@ class TestLoan(TestCase):
         post = {"date": timezone.now()}
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         balance = resp.data.get("balance")
-        self.assertEqual(balance, Decimal("941.68"))
+        self.assertEqual(balance, Decimal("941.71"))
 
     def test_loan_balance_incorrect_value(self) -> None:
         self._new_payment()
         post = {"date": timezone.now() - timedelta(hours=1)}
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         balance = resp.data.get("balance")
-        self.assertEqual(balance, Decimal("1027.29"))
+        self.assertEqual(balance, Decimal("1027.32"))
 
 
 class TestClient(TestCase):

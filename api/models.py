@@ -40,7 +40,8 @@ class Loan(Base):
         rate = Decimal(f"{self.rate}")
         term = Decimal(self.term)
         r = rate / term
-        return (r + r / ((1 + r) ** term - 1)) * self.amount
+        exact_installment = (r + r / ((1 + r) ** term - 1)) * self.amount
+        return exact_installment.quantize(Decimal(".00"), rounding=ROUND_HALF_UP)
 
     @classmethod
     def interest_rate(cls, client: Base, rate: Decimal) -> Decimal:
@@ -81,11 +82,8 @@ class Payment(Base):
     )
 
     def validate(self) -> None:
-        rounded_installment = self.loan.installment.quantize(
-            Decimal(".00"), rounding=ROUND_HALF_UP
-        )
-        if self.amount != rounded_installment:
-            raise ValueError(f"You must pay ${rounded_installment}")
+        if self.amount != self.loan.installment:
+            raise ValueError(f"You must pay ${self.loan.installment}")
 
         last_payment = (
             self.loan.payment_set.filter(date__month=self.date.month)

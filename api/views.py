@@ -3,7 +3,6 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions, response, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from decimal import Decimal, ROUND_HALF_UP
 from api.models import Loan, Client
 from api.serializers import LoanSerializer, PaymentSerializer, ClientSerializer
 
@@ -53,14 +52,7 @@ class LoanViewSet(viewsets.ModelViewSet):
         """
         date = request.data.get("date", None)
         loan = self.get_object()
-        return response.Response(
-            {
-                "balance": loan.balance(date).quantize(
-                    Decimal(".00"), rounding=ROUND_HALF_UP
-                )
-            },
-            status=200,
-        )
+        return response.Response({"balance": loan.balance(date)}, status=200)
 
 
 class ClientViewSet(viewsets.ModelViewSet):
