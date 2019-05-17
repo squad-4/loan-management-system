@@ -1,5 +1,6 @@
-from api.models import Loan, Payment, Client
 from rest_framework import serializers
+
+from api.models import Client, Loan, Payment
 
 
 class LoanSerializer(serializers.ModelSerializer):
@@ -22,7 +23,7 @@ class LoanSerializer(serializers.ModelSerializer):
     def get_loan_id(self, loan: Loan) -> str:
         return str(loan.id)
 
-    def validate(self, data):
+    def validate(self, data: dict) -> dict:
         try:
             data["rate"] = Loan.interest_rate(data["client"], data["rate"])
         except ValueError as e:
@@ -35,6 +36,16 @@ class LoanSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
+    def validate(self, data: dict) -> dict:
+        payment = Payment(**data)
+
+        try:
+            payment.validate()
+        except ValueError as e:
+            raise serializers.ValidationError({"error": e})
+
+        return data
+
     class Meta:
         model = Payment
         exclude = ("updated", "active")

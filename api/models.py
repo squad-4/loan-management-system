@@ -1,8 +1,8 @@
 import uuid
 
 from django.db import models
-from django.utils.translation import gettext as _
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 
 class Base(models.Model):
@@ -70,6 +70,23 @@ class Payment(Base):
         verbose_name=_("payment"), max_length=6, choices=PAYMENTS, default=MISSED
     )
     amount = models.FloatField(verbose_name=_("amount"))
+
+    def validate(self) -> None:
+        if self.amount != self.loan.installment:
+            raise ValueError(f"You must pay ${self.loan.installment}")
+
+        last_payment = (
+            self.loan.payment_set.filter(date__month=self.date.month)
+            .order_by("-date", "-updated")
+            .first()
+        )
+
+        if last_payment and last_payment.date.month == self.date.month:
+            if (
+                last_payment.payment == self.payment
+                or last_payment.payment == self.MADE
+            ):
+                raise ValueError("Only one payment per month")
 
     def __str__(self) -> str:
         return str(self.id)
