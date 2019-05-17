@@ -81,10 +81,11 @@ class Payment(Base):
     )
 
     def validate(self) -> None:
-        if self.amount != self.loan.installment.quantize(
+        rounded_installment = self.loan.installment.quantize(
             Decimal(".00"), rounding=ROUND_HALF_UP
-        ):
-            raise ValueError(f"You must pay ${self.loan.installment}")
+        )
+        if self.amount != rounded_installment:
+            raise ValueError(f"You must pay ${rounded_installment}")
 
         last_payment = (
             self.loan.payment_set.filter(date__month=self.date.month)
