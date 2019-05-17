@@ -44,13 +44,13 @@ class LoanViewSet(viewsets.ModelViewSet):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=["post"])
+    @action(detail=True, methods=["get"])
     def balance(self, request, pk=None):
         """
-        post:
+        get:
         Return the loan balance for a given date.
         """
-        date = request.data.get("date", None)
+        date = request.query_params.get("date", None)
         loan = self.get_object()
         return response.Response({"balance": loan.balance(date)}, status=200)
 

@@ -1,10 +1,12 @@
 from datetime import timedelta
+from decimal import Decimal
+from urllib import parse
 
 from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
+
 from api.tests.utils import create_client
-from decimal import Decimal
 
 
 class TestLoan(TestCase):
@@ -62,21 +64,27 @@ class TestLoan(TestCase):
 
     def test_loan_balance(self) -> None:
         self._new_payment()
-        post = {"date": timezone.now()}
-        resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
+        date = parse.quote_plus(str(timezone.now()))
+        resp = self.api.get(
+            f"/api/loans/{self.loan_id}/balance/?date={date}", format="json"
+        )
         self.assertEqual(resp.status_code, 200)
 
     def test_loan_balance_value(self) -> None:
         self._new_payment()
-        post = {"date": timezone.now()}
-        resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
+        date = parse.quote_plus(str(timezone.now()))
+        resp = self.api.get(
+            f"/api/loans/{self.loan_id}/balance/?date={date}", format="json"
+        )
         balance = resp.data.get("balance")
         self.assertEqual(balance, Decimal("941.71"))
 
     def test_loan_balance_incorrect_value(self) -> None:
         self._new_payment()
-        post = {"date": timezone.now() - timedelta(hours=1)}
-        resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
+        date = parse.quote_plus(str(timezone.now() - timedelta(hours=1)))
+        resp = self.api.get(
+            f"/api/loans/{self.loan_id}/balance/?date={date}", format="json"
+        )
         balance = resp.data.get("balance")
         self.assertEqual(balance, Decimal("1027.32"))
 
