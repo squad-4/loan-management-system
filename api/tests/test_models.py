@@ -2,6 +2,7 @@ from django.test import TestCase
 from api.models import Payment, Loan, Client
 from django.db.utils import IntegrityError
 from datetime import datetime
+from decimal import Decimal, ROUND_HALF_UP
 from api.tests.utils import (
     create_client_from_model,
     create_loan_from_model,
@@ -54,8 +55,10 @@ class TestLoanModel(TestCase):
         self.assertEqual(str(self.loan), str(self.loan.id))
 
     def test_installment(self) -> None:
-        actual_loan_installment = round(self.loan.installment, 2)
-        expected_loan_installment = 2647.84
+        actual_loan_installment = self.loan.installment.quantize(
+            Decimal(".00"), rounding=ROUND_HALF_UP
+        )
+        expected_loan_installment = Decimal("2647.84")
         self.assertEqual(
             expected_loan_installment,
             actual_loan_installment,

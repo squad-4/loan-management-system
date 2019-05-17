@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from decimal import Decimal, ROUND_HALF_UP
 
 from api.models import Client, Loan, Payment
 
@@ -6,9 +7,9 @@ from api.models import Client, Loan, Payment
 class LoanSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(write_only=True, required=False, format="hex")
-    amount = serializers.FloatField(write_only=True)
+    amount = serializers.DecimalField(write_only=True, max_digits=20, decimal_places=2)
     term = serializers.IntegerField(write_only=True)
-    rate = serializers.FloatField(write_only=True)
+    rate = serializers.DecimalField(write_only=True, max_digits=20, decimal_places=2)
     date = serializers.DateTimeField(write_only=True)
 
     installment = serializers.SerializerMethodField()
@@ -17,8 +18,8 @@ class LoanSerializer(serializers.ModelSerializer):
         queryset=Client.objects.all(), required=True, source="client", write_only=True
     )
 
-    def get_installment(self, loan: Loan) -> float:
-        return loan.installment
+    def get_installment(self, loan: Loan) -> Decimal:
+        return loan.installment.quantize(Decimal(".00"), rounding=ROUND_HALF_UP)
 
     def get_loan_id(self, loan: Loan) -> str:
         return str(loan.id)

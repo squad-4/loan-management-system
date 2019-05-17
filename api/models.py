@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from decimal import Decimal, ROUND_HALF_UP
 
 
 class Base(models.Model):
@@ -16,29 +17,33 @@ class Base(models.Model):
 
 
 class Loan(Base):
-    amount = models.FloatField(verbose_name=_("amount"))
+    amount = models.DecimalField(
+        max_digits=20, decimal_places=2, verbose_name=_("amount")
+    )
     term = models.IntegerField(verbose_name=_("term"))
-    rate = models.FloatField(verbose_name=_("rate"))
+    rate = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("rate"))
     client = models.ForeignKey(
         to="api.Client", verbose_name=_("client_id"), on_delete=models.DO_NOTHING
     )
 
-    def balance(self, date: timezone.datetime = timezone.now()) -> dict:
+    def balance(self, date: timezone.datetime = timezone.now()) -> Decimal:
         debit = self.installment * self.term
         credit = sum(
             self.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list(
                 "amount", flat=True
             )
         )
-        return debit - credit
+        return Decimal(debit - credit)
 
     @property
-    def installment(self) -> float:
-        r = self.rate / self.term
-        return (r + r / ((1 + r) ** self.term - 1)) * self.amount
+    def installment(self) -> Decimal:
+        rate = Decimal(f"{self.rate}")
+        term = Decimal(self.term)
+        r = rate / term
+        return (r + r / ((1 + r) ** term - 1)) * self.amount
 
     @classmethod
-    def interest_rate(cls, client: Base, rate: float) -> float:
+    def interest_rate(cls, client: Base, rate: Decimal) -> Decimal:
         prev_loan = Loan.objects.filter(client=client.id).order_by("-date").first()
 
         if prev_loan and prev_loan.balance() > 0:
@@ -50,8 +55,7 @@ class Loan(Base):
 
         if missed_payments > 3:
             raise ValueError("Missed too many payments")
-
-        return rate - 0.02 if not missed_payments else rate + 0.04
+        return rate - Decimal("0.02") if not missed_payments else rate + Decimal("0.04")
 
     def __str__(self) -> str:
         return f"{self.id}"
@@ -69,10 +73,14 @@ class Payment(Base):
     payment = models.CharField(
         verbose_name=_("payment"), max_length=6, choices=PAYMENTS, default=MISSED
     )
-    amount = models.FloatField(verbose_name=_("amount"))
+    amount = models.DecimalField(
+        max_digits=20, decimal_places=2, verbose_name=_("amount")
+    )
 
     def validate(self) -> None:
-        if self.amount != self.loan.installment:
+        if self.amount != self.loan.installment.quantize(
+            Decimal(".00"), rounding=ROUND_HALF_UP
+        ):
             raise ValueError(f"You must pay ${self.loan.installment}")
 
         last_payment = (

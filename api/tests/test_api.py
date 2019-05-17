@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
 from api.tests.utils import create_client
+from decimal import Decimal
 
 
 class TestLoan(TestCase):
@@ -24,7 +25,6 @@ class TestLoan(TestCase):
             "client_id": client_id,
         }
         resp = self.api.post("/api/loans/", post, format="json")
-
         if resp.status_code == 201:
             self.loan_id = resp.data.get("loan_id", None)
 
@@ -36,7 +36,7 @@ class TestLoan(TestCase):
         if self.payment_id:
             return 201
 
-        post = {"payment": "made", "date": timezone.now(), "amount": 84.69369875849053}
+        post = {"payment": "made", "date": timezone.now(), "amount": 84.69}
         resp = self.api.post(
             f"/api/loans/{self.loan_id}/payments/", post, format="json"
         )
@@ -71,14 +71,14 @@ class TestLoan(TestCase):
         post = {"date": timezone.now()}
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         balance = resp.data.get("balance")
-        self.assertEqual(round(balance, 2), 931.63)
+        self.assertEqual(balance, Decimal("931.63"))
 
     def test_loan_balance_incorrect_value(self) -> None:
         self._new_payment()
         post = {"date": timezone.now() - timedelta(hours=1)}
         resp = self.api.post(f"/api/loans/{self.loan_id}/balance/", post, format="json")
         balance = resp.data.get("balance")
-        self.assertEqual(round(balance, 2), 1016.32)
+        self.assertEqual(balance, Decimal("1016.32"))
 
 
 class TestClient(TestCase):
