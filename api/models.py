@@ -46,7 +46,10 @@ class Loan(Base):
     def interest_rate(cls, client: Base, rate: Decimal) -> Decimal:
         prev_loan = Loan.objects.filter(client=client.id).order_by("-date").first()
 
-        if prev_loan and prev_loan.balance() > 0:
+        if not prev_loan:
+            return rate
+
+        if prev_loan.balance() > 0:
             raise ValueError("Pending loan")
 
         missed_payments = Payment.objects.filter(
