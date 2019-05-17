@@ -25,6 +25,10 @@ class TestPaymentModel(TestCase):
         self.assertEqual(expected_date, self.payment.date)
         self.assertEqual(expected_payment, self.payment.payment)
 
+    def test_validate_raises_exception(self):
+        with self.assertRaises(ValueError):
+            self.payment.validate()
+
     def test_payment__str__(self) -> None:
         self.assertEqual(str(self.payment), str(self.payment.id))
 
