@@ -58,7 +58,7 @@ class TestLoanModel(TestCase):
         actual_loan_installment = self.loan.installment.quantize(
             Decimal(".00"), rounding=ROUND_HALF_UP
         )
-        expected_loan_installment = Decimal("2647.84")
+        expected_loan_installment = Decimal("2573.42")
         self.assertEqual(
             expected_loan_installment,
             actual_loan_installment,

@@ -39,7 +39,7 @@ class Loan(Base):
     def installment(self) -> Decimal:
         rate = Decimal(f"{self.rate}")
         term = Decimal(self.term)
-        r = rate / term
+        r = rate / Decimal("12")
         exact_installment = (r + r / ((1 + r) ** term - 1)) * self.amount
         return exact_installment.quantize(Decimal(".00"), rounding=ROUND_HALF_UP)
 
