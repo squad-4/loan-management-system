@@ -3,10 +3,13 @@ from api.models import Payment, Loan, Client
 from django.db.utils import IntegrityError
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
+import os.path
 from api.tests.utils import (
     create_client_from_model,
     create_loan_from_model,
     create_payment_from_model,
+    iter_csv_data,
+    loans_from_csv,
 )
 
 
@@ -36,8 +39,11 @@ class TestPaymentModel(TestCase):
 
 class TestLoanModel(TestCase):
     def setUp(self) -> None:
-        client = create_client_from_model()
-        self.loan = create_loan_from_model(client)
+        self.client = create_client_from_model()
+        self.loan = create_loan_from_model(self.client)
+        self.loans_csv_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "resources", "loans.csv"
+        )
 
     def test_loan_instance(self) -> None:
         expected_amount = 15000
@@ -55,15 +61,38 @@ class TestLoanModel(TestCase):
         self.assertEqual(str(self.loan), str(self.loan.id))
 
     def test_installment(self) -> None:
-        actual_loan_installment = self.loan.installment.quantize(
-            Decimal(".00"), rounding=ROUND_HALF_UP
-        )
-        expected_loan_installment = Decimal("2647.84")
-        self.assertEqual(
-            expected_loan_installment,
-            actual_loan_installment,
-            "Property installment did not return the right value",
-        )
+        iter_csv = iter_csv_data(self.loans_csv_path)
+        loans = loans_from_csv(iter_csv)
+        for loan in loans:
+            with self.subTest(
+                name=f"rate: {loan.rate}, amount: {loan.amount}, term: {loan.term}"
+            ):
+                rate = Decimal(loan.rate)
+                term = Decimal(loan.term)
+                amount = Decimal(loan.amount.replace(",", ""))
+                expected_installment = Decimal(loan.installment.replace(",", ""))
+                actual_loan = create_loan_from_model(
+                    self.client, rate=rate, term=term, amount=amount
+                )
+                actual_installment = actual_loan.installment
+                self.assertEqual(expected_installment, actual_installment)
+
+    def test_balance(self) -> None:
+        iter_csv = iter_csv_data(self.loans_csv_path)
+        loans = loans_from_csv(iter_csv)
+        for loan in loans:
+            with self.subTest(
+                name=f"installment: {loan.installment}, term: {loan.term}"
+            ):
+                rate = Decimal(loan.rate)
+                term = Decimal(loan.term)
+                amount = Decimal(loan.amount.replace(",", ""))
+                expected_balance = Decimal(loan.balance.replace(",", ""))
+                actual_loan = create_loan_from_model(
+                    self.client, rate=rate, term=term, amount=amount
+                )
+                actual_balance = actual_loan.balance()
+                self.assertEqual(expected_balance, actual_balance)
 
     def test_interest_rate(self) -> None:
         with self.assertRaises(ValueError):

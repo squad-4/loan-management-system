@@ -2,7 +2,10 @@ from django.core.handlers.wsgi import WSGIRequest
 from datetime import datetime
 from api.models import Payment, Loan, Client
 from rest_framework.test import APIClient
-from typing import Union
+from typing import Union, Iterator, Type
+from collections import namedtuple
+from decimal import Decimal
+import csv
 
 
 def create_client_from_model(
@@ -22,9 +25,9 @@ def create_client_from_model(
 
 def create_loan_from_model(
     client: Client,
-    amount: float = 15000,
+    amount: Decimal = 15000,
     term: int = 6,
-    rate: float = 0.10,
+    rate: Decimal = 0.10,
     date: Union[datetime, str] = "2019-05-09 03:18Z",
 ) -> Loan:
     return Loan.objects.create(
@@ -36,7 +39,7 @@ def create_payment_from_model(
     loan: Loan,
     payment: str = "made",
     date: Union[datetime, str] = "2019-06-09 03:18Z",
-    amount: float = 200.00,
+    amount: Decimal = 200.00,
 ) -> Payment:
     return Payment.objects.create(loan=loan, payment=payment, date=date, amount=amount)
 
@@ -51,3 +54,20 @@ def create_client() -> WSGIRequest:
     }
     api = APIClient()
     return api.post("/api/clients/", client_payload, format="json")
+
+
+def __loans_named_tuple(loans_attr: list) -> Type[tuple]:
+    return namedtuple("Loans", " ".join(loans_attr))
+
+
+def iter_csv_data(csv_filename: str) -> Iterator:  # pragma: no cover
+    with open(csv_filename, "r", encoding="utf-8") as lines:
+        for line in csv.reader(lines):
+            yield line
+
+
+def loans_from_csv(iter_csv: Iterator) -> list:
+    next(iter_csv)
+    headers = list(next(iter_csv))
+    Loan = __loans_named_tuple(headers)
+    return [Loan(*line) for line in iter_csv]
