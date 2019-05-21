@@ -1,9 +1,9 @@
 import uuid
+from decimal import ROUND_HALF_UP, Decimal
 
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from decimal import Decimal, ROUND_HALF_UP
 
 
 class Base(models.Model):
@@ -27,12 +27,10 @@ class Loan(Base):
     )
 
     def balance(self, date: timezone.datetime = timezone.now()) -> Decimal:
+        payments = self.payment_set.filter(payment=Payment.MADE)
+        payments = payments.filter(date__lte=date) if date else payments
         debit = self.installment * self.term
-        credit = sum(
-            self.payment_set.filter(payment=Payment.MADE, date__lte=date).values_list(
-                "amount", flat=True
-            )
-        )
+        credit = sum(payments.values_list("amount", flat=True))
         return Decimal(debit - credit)
 
     @property

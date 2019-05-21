@@ -1,10 +1,14 @@
+from datetime import datetime
+
+from django.utils import dateparse, timezone
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions, response, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from api.models import Loan, Client
-from api.serializers import LoanSerializer, PaymentSerializer, ClientSerializer
+
+from api.models import Client, Loan
+from api.serializers import ClientSerializer, LoanSerializer, PaymentSerializer
 
 
 class LoanViewSet(viewsets.ModelViewSet):
@@ -51,6 +55,18 @@ class LoanViewSet(viewsets.ModelViewSet):
         Return the loan balance for a given date.
         """
         date = request.query_params.get("date", None)
+
+        if not date:
+            date = timezone.now()
+        else:
+            try:
+                date = datetime.fromisoformat(date)
+            except ValueError:
+                date = dateparse.parse_datetime(date)
+
+            if type(date) == datetime and not date.tzinfo:
+                date = timezone.make_aware(date)
+
         loan = self.get_object()
         return response.Response({"balance": loan.balance(date)}, status=200)
 
