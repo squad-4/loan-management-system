@@ -89,7 +89,10 @@ class Payment(Base):
             .first()
         )
 
-        if last_payment and last_payment.date.month == self.date.month:
+        if last_payment and (
+            last_payment.date.month == self.date.month
+            and last_payment.date.year == self.date.year
+        ):
             if (
                 last_payment.payment == self.payment
                 or last_payment.payment == self.MADE
