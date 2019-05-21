@@ -48,7 +48,7 @@ class Loan(Base):
         if not prev_loan:
             return rate
 
-        if prev_loan.balance() > 0:
+        if prev_loan.balance(None) > 0:
             raise ValueError("Pending loan")
 
         missed_payments = Payment.objects.filter(
