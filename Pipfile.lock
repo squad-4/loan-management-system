@@ -436,10 +436,10 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:0e375a4c177090292988d1c2f997c7c2467d908c1adbed3e08fb511486c85457",
-                "sha256:440815529340fb7fdd6a83ebf4258cc2860fb3770d37b52875e37c6f509a4cd6"
+                "sha256:027cfc6524613de726789072f95d2e4cc64dd1dee8096d42d13f2ead5bd302f5",
+                "sha256:0d05199e1f0b1a8707a1b9c46476d4a49807fb56cb1b0737db1d37feb42fe31d"
             ],
-            "version": "==0.13"
+            "version": "==0.15"
         },
         "mccabe": {
             "hashes": [
