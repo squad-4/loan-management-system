@@ -82,10 +82,10 @@
         },
         "drf-yasg": {
             "hashes": [
-                "sha256:4e282ba668b257bc26b9cddd688e50f7b7f39ad38caa15612b96e8e2bab74904",
-                "sha256:82b535a22fc13e0a202217df4c6470c40b54d21f742e69798f53c69afccbfdac"
+                "sha256:68fded2ffdf46e03f33e766184b7d8f1e1a5236f94acfd0c4ba932a57b812566",
+                "sha256:fcef74709ead2b365410be3d12afbfd0a6e49d1efe615a15a929da7e950bb83c"
             ],
-            "version": "==1.16.0"
+            "version": "==1.16.1"
         },
         "gunicorn": {
             "hashes": [
