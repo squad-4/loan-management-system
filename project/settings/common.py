@@ -67,4 +67,5 @@ STATIC_URL = "/static/"
 SWAGGER_SETTINGS = {
     "USE_SESSION_AUTH": False,
     "SUPPORTED_SUBMIT_METHODS": ["get", "post"],
+    "DEFAULT_GENERATOR_CLASS": "rest_framework.schemas.generators.BaseSchemaGenerator",
 }
