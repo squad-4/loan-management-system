@@ -508,9 +508,9 @@
         },
         "nodeenv": {
             "hashes": [
-                "sha256:ad8259494cf1c9034539f6cced78a1da4840a4b157e23640bc4a0c0546b0cb7a"
+                "sha256:561057acd4ae3809e665a9aaaf214afff110bbb6a6d5c8a96121aea6878408b3"
             ],
-            "version": "==1.3.3"
+            "version": "==1.3.4"
         },
         "pathspec": {
             "hashes": [
