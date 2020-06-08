@@ -315,10 +315,10 @@
         },
         "swagger-spec-validator": {
             "hashes": [
-                "sha256:8cefd19349681531b07a187eee85c2ffe39353a0f1f21989ec29da6af618424b",
-                "sha256:ba4e636d89bf547a6f41a6945bb503cf06dde13664ad978a7407aaed772ae75f"
+                "sha256:78c5165b0686788344f0c9f137f0e23e9b2b2b7d1947b1c10061c0984d008af1",
+                "sha256:ee12f97b058aadd276a53f69fb2ac4d10014d382ae70ce4722562a6fbdecb6ed"
             ],
-            "version": "==2.6.0"
+            "version": "==2.7.0"
         },
         "uritemplate": {
             "hashes": [
