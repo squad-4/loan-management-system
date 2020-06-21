@@ -1,4 +1,5 @@
-schedule: "every week"
+update: insecure
+schedule: "every month"
 requirements:
   - Pipfile
   - Pipfile.lock
