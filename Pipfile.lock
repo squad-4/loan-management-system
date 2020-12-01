@@ -109,10 +109,10 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83",
-                "sha256:dc15b2969b4ce36305c51eebe62d418ac7791e9a157911d58bfb1f9ccd8e2070"
+                "sha256:590690d61efdd716ff82c39ca9a9d4209252adfe288a4b5721181050acbd4175",
+                "sha256:d9b8a46a0885337627a6430db287176970fff18ad421becec1d64cfc763c2099"
             ],
-            "version": "==1.7.0"
+            "version": "==3.1.0"
         },
         "inflection": {
             "hashes": [
@@ -483,10 +483,10 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83",
-                "sha256:dc15b2969b4ce36305c51eebe62d418ac7791e9a157911d58bfb1f9ccd8e2070"
+                "sha256:590690d61efdd716ff82c39ca9a9d4209252adfe288a4b5721181050acbd4175",
+                "sha256:d9b8a46a0885337627a6430db287176970fff18ad421becec1d64cfc763c2099"
             ],
-            "version": "==1.7.0"
+            "version": "==3.1.0"
         },
         "mccabe": {
             "hashes": [
