@@ -703,10 +703,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:8aa9c37b082664dbce2236fa420759c02d64109d8e6013593ad13914718a30fd",
-                "sha256:f14a0a98ea4397f0d926cff950361766b6a73cd5975ae7eb259d12919f819a25"
+                "sha256:3e445890d7f58a066080885c48144268f85b456b788ad849a60f239eb04932af",
+                "sha256:f61234eee61c817a7d33e3a21642bd642f0825d3a56107b2a8deb067b03bf1e6"
             ],
-            "version": "==20.0.29"
+            "version": "==20.4.1"
         },
         "zipp": {
             "hashes": [
