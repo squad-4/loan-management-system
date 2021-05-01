@@ -559,10 +559,10 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:1657663fdd63a321a4a739915d7d03baedd555b25054449090f97bb0cb30a915",
-                "sha256:e8b1315c585052e729ab7e99dcca5698266bedce9067d21dc909c23e3ceed626"
+                "sha256:70c5ec1f30406250b706eda35e868b87e3e4ba099af8787e3e8b4b01e84f4712",
+                "sha256:900d3c7e1bf4cf0374bb2893c24c23304952181405b4d88c9c40b72bda1bb8a9"
             ],
-            "version": "==2.6.0"
+            "version": "==2.12.1"
         },
         "pycodestyle": {
             "hashes": [
